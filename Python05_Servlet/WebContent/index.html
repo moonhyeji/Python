@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript">
+
+//http://localhost:8686/crawling 에 요청을 하면, json이 응답.
+// 비동기 통신을 이용하여 요청해서 응답받은 json 데이터를 tbody에 출력 
+//별점 높은 순으로 정렬 
+
+$(function(){
+	var $tbody = $("#tbody");
+	
+	$.getJSON('http:localhost:8686/crawling', function(data){    /* //:얘네 없으면 안되나? */
+		var movies = data.movies;            //movies 키를 가지고 movies발류값(영화k:v들)
+		
+		movies.sort(function(a,b){
+			return b.star-a.star;
+		});
+		for (var i =0; i < movies.length; i++){
+			var $tr = $("<tr>");
+			var $title = $("<td>").append(movies[i].title);
+			var $star = $("<td>").append(movies[i].star);
+			
+			$tr.append($title);
+			$tr.append($star);
+			
+			$tbody.append($tr);
+		}
+	});
+});
+//*****자바서버에서 파이선 서버로 요청.
+//파이선에서 crawling값을 리턴 .->리턴값이 json형태
+//이 json형태의 값을 자바가 사용.
+//파이선 서버가 꺼져있어서 사용을못함.
+
+
+ </script>
+</head>
+<body>
+<table border="1">
+	<thead>
+		<tr>
+			<th>title</th>
+			<th>star</th>
+		</tr>
+	</thead>
+	<tbody id="tbody">
+	</tbody>
+</table>
+</body>
+</html>
